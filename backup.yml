@@ -1,0 +1,32 @@
+---
+
+  # makes a backup of your openbazaar store as a tar.gz,
+  # and copies the archive to the local machine
+
+- hosts: sab
+  remote_user: root
+
+  vars:
+    archive_directory: ~/.saveabit/backup # path on local machine to save to
+
+  vars_files:
+    - vars/secret.yml
+
+  tasks:
+    - name: stop the openbazaar server for maintenance
+      service: name=openbazaard state=stopped
+
+    - name: get timestamp
+      set_fact:
+        timestamp: "{{ ansible_date_time.iso8601 }}"
+
+    - name: archive the .openbazaar folder
+      command: tar cvzf /tmp/ob_{{ timestamp }}.tar.gz /home/openbazaar/.openbazaar
+      args:
+        creates: /tmp/ob_{{ timestamp }}.tar.gz
+
+    - name: copy the archive to local machine
+      fetch: src=/tmp/ob_{{ timestamp }}.tar.gz dest={{ archive_directory }}
+
+    - name: restart the openbazaar server
+      service: name=openbazaard state=started

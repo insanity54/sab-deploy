@@ -1,0 +1,6 @@
+---
+
+- name: openbazaar
+  src: insanity54.openbazaar
+- name: bootstrap
+  src: insanity54.bootstrap

@@ -1,0 +1,25 @@
+---
+
+  # restores a local backup to the remote machine.
+
+- hosts: sab
+  remote_user: root
+
+  variables:
+    archive_directory: ~/.saveabit/
+
+  vars_files:
+    - {{ archive_directory }}/secret.yml
+
+  tasks:
+    - name: get timestamp
+      set_fact:
+        timestamp: {{ ansible_date_time.iso8601 }}
+
+    - name: archive the .openbazaar folder
+      command: tar cvzf /tmp/ob_{{ timestamp }} /home/openbazaar/.openbazaar
+      args:
+        creates: /tmp/ob_{{ timestamp }}.tar.gz
+
+    - name: copy the archive to local machine
+      fetch: src=/tmp/ob_{{ timestamp }}.tar.gz dest={{ archive_directory }}/backup
