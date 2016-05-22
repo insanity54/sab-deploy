@@ -11,6 +11,8 @@ Deploy an OpenBazaar-Server to a remote machine using Ansible. This is how I dep
 * [x] SSL setup
 * [x] Backup playbook
 * [x] Restore from backup playbook
+* [ ] Update the OpenBazaar-Server
+
 
 ## Administrative tasks
 
