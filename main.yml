@@ -16,11 +16,49 @@
     - openbazaar
 
   tasks:
+    - name: create directory for ssl
+      file: path={{ openbazaar_ssl_directory }} state=directory mode=0755
 
-    - debug: msg={{ openbazaar_allowed_ip }}
+    - name: ensure openssl is installed
+      apt: name=openssl state=present
 
-    - debug: msg="restarting openbazaar"
+    - name: generate SSL certs and keys
+      command: "{{ item.command }}"
+      args:
+        chdir: "{{ openbazaar_ssl_directory }}"
+        creates: "{{ openbazaar_ssl_directory }}/{{ item.filename }}"
+      with_items:
+        -
+          command: openssl genrsa -out rootCA.key 4096
+          filename: rootCA.crt
+        -
+          command: openssl req -x509 -new -nodes -key rootCA.key -days 1024 -out rootCA.crt -subj "/C=DE/ST=Germany/L=Walldorf/O=SAP SE/OU=Tools/CN=rootCA"
+          filename: rootCA.crt
+        -
+          command: openssl genrsa -out server.key 4096
+          filename: server.key
+        -
+          command: openssl req -new -key server.key -out server.csr -subj "/C=DE/ST=Germany/L=Walldorf/O=SAP SE/OU=Tools/CN=localhost"
+          filename: server.csr
+        -
+          command: openssl x509 -req -in server.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out server.crt
+          filename: server.crt
+
+    # - name: Enable SSL
+    #   lineinfile: dest=/home/{{ openbazaar_user }}/openbazaar/ob.cfg regexp="^#SSL =" line="SSL = True"
+    #
+    # - name: Set path to the server certificate
+    #   lineinfile: dest=/home/{{ openbazaar_user }}/openbazaar/ob.cfg regexp="^#SSL_CERT =" line="SSL_CERT = {{ openbazaar_ssl_directory }}/server.crt"
+    #
+    # - name: Set path to the SSL key
+    #   lineinfile: dest=/home/{{ openbazaar_user }}/openbazaar/ob.cfg regexp="^#SSL_KEY =" line="SSL_KEY = {{ openbazaar_ssl_directory }}/server.key"
+
+    - name: download the rootCA to localhost
+      fetch: src={{ openbazaar_ssl_directory }}/rootCA.crt dest={{ archive_directory }}
       notify: restart openbazaar
+
+    #- debug: msg="Now you can log in to your OpenBazaar-Server through an OpenBazaar-Client installed on your local machine."
+
 
   handlers:
     - name: restart openbazaar
