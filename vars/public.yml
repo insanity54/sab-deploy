@@ -1,5 +1,9 @@
 ---
-openbazaar_username: "{{ vault_openbazaar_username }}"
+openbazaar_user: openbazaar # username the OpenBazaar-Server is installed as
+openbazaar_group: openbazaar # group the OpenBazaar-Server is installed as
+openbazaar_username: "{{ vault_openbazaar_username }}" # username to use to log into the openbazaar-server through API
 openbazaar_password: "{{ vault_openbazaar_password }}"
 openbazaar_allowed_ip: 0.0.0.0
 openbazaar_additional_flags: ""
+
+archive_directory: "{{ vault_archive_directory }}"

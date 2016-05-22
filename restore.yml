@@ -5,21 +5,21 @@
 - hosts: sab
   remote_user: root
 
-  variables:
-    archive_directory: ~/.saveabit/
-
   vars_files:
-    - {{ archive_directory }}/secret.yml
+    - vars/secret.yml
+    - vars/public.yml
+
 
   tasks:
-    - name: get timestamp
-      set_fact:
-        timestamp: {{ ansible_date_time.iso8601 }}
+    - name: get past archives
+      delegate_to: localhost
+      find: paths={{archive_directory}}/{{ ansible_hostname }}/tmp/ patterns="ob_*.tar.gz"
+      register: past_archives
 
-    - name: archive the .openbazaar folder
-      command: tar cvzf /tmp/ob_{{ timestamp }} /home/openbazaar/.openbazaar
-      args:
-        creates: /tmp/ob_{{ timestamp }}.tar.gz
+    #- debug: msg={{past_archives}}
 
-    - name: copy the archive to local machine
-      fetch: src=/tmp/ob_{{ timestamp }}.tar.gz dest={{ archive_directory }}/backup
+    - name: upload the latest archive
+      copy: src={{ past_archives.files[0].path }} dest=/tmp/
+
+    - name: upload and extract the archive
+      unarchive: copy=yes src={{ past_archives.files[0].path }} dest=/home/{{ openbazaar_user }}/

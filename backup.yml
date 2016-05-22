@@ -6,11 +6,9 @@
 - hosts: sab
   remote_user: root
 
-  vars:
-    archive_directory: ~/.saveabit/backup # path on local machine to save to
-
   vars_files:
     - vars/secret.yml
+    - vars/public.yml
 
   tasks:
     - name: stop the openbazaar server for maintenance
@@ -21,8 +19,9 @@
         timestamp: "{{ ansible_date_time.iso8601 }}"
 
     - name: archive the .openbazaar folder
-      command: tar cvzf /tmp/ob_{{ timestamp }}.tar.gz /home/openbazaar/.openbazaar
+      command: tar cvzf /tmp/ob_{{ timestamp }}.tar.gz .openbazaar
       args:
+        chdir: /home/{{ openbazaar_user }}
         creates: /tmp/ob_{{ timestamp }}.tar.gz
 
     - name: copy the archive to local machine
