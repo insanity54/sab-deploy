@@ -55,3 +55,8 @@ This is meant to be used just after deploying a new server, when you already hav
 Care must be taken with restoration, as it will overwrite any remote openbazaar store data with a local backup. Make sure that's what you really want to do!
 
     ansible-playbook restore.yml
+
+
+## Feedback
+
+I welcome feedback! Especially negative feedback. I'm looking to improve my DevOps skills. Feel free to open an [issue](https://github.com/insanity54/sab-deploy/issues).
