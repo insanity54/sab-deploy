@@ -44,15 +44,6 @@
           command: openssl x509 -req -in server.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out server.crt
           filename: server.crt
 
-    # - name: Enable SSL
-    #   lineinfile: dest=/home/{{ openbazaar_user }}/openbazaar/ob.cfg regexp="^#SSL =" line="SSL = True"
-    #
-    # - name: Set path to the server certificate
-    #   lineinfile: dest=/home/{{ openbazaar_user }}/openbazaar/ob.cfg regexp="^#SSL_CERT =" line="SSL_CERT = {{ openbazaar_ssl_directory }}/server.crt"
-    #
-    # - name: Set path to the SSL key
-    #   lineinfile: dest=/home/{{ openbazaar_user }}/openbazaar/ob.cfg regexp="^#SSL_KEY =" line="SSL_KEY = {{ openbazaar_ssl_directory }}/server.key"
-
     - name: download the rootCA to localhost
       fetch: src={{ openbazaar_ssl_directory }}/rootCA.crt dest={{ archive_directory }}
       notify: restart openbazaar

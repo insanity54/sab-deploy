@@ -7,7 +7,5 @@ openbazaar_allowed_ip: 0.0.0.0
 openbazaar_additional_flags: ""
 openbazaar_ssl_enabled: True
 openbazaar_ssl_directory: /etc/openbazaar
-openbazaar_ssl_cert: "{{ openbazaar_ssl_directory }}/server.crt"
-openbazaar_ssl_key: "{{ openbazaar_ssl_directory }}/server.key"
 
 archive_directory: "{{ vault_archive_directory }}"
