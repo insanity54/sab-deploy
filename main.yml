@@ -11,7 +11,6 @@
     openbazaar_git_version: a4902caf8a2319125d2cfac6f1e51b8c2e961a75
 
 
-
   roles:
     - bootstrap
     - openbazaar
