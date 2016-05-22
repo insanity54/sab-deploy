@@ -24,9 +24,9 @@ Run the main.yml playbook
 
     ansible-playbook main.yml
 
-Your new server will deploy. Also, a SSL root certificate authority file will be copied to your local machine, to the path `{{archive_directory/[HOSTNAME]/[...]/rootCA.crt`. Associate this `rootCA.crt` file with your operating system ([STEP 2 of this guide](https://slack-files.com/T02FPGBKB-F0XK9ND2Q-fc5e6500a3)) to establish a secure connection to your OpenBazaar server.
+Your new server will deploy. Also, a SSL root certificate authority file will be copied to your local machine, to the path `archive_directory/[HOSTNAME]/etc/openbazaar/rootCA.crt`. Associate this `rootCA.crt` file with your operating system ([STEP 2 of this guide](https://slack-files.com/T02FPGBKB-F0XK9ND2Q-fc5e6500a3)) to establish a secure connection to your OpenBazaar server.
 
-You can now log in to your OpenBazaar-Server through the OpenBazaar-Client installed on your local machine.
+You can now log in to your OpenBazaar-Server through the OpenBazaar-Client installed on your local machine. Be sure that SSL is enabled in OpenBazaar-Client.
 
 ### change your openbazaar server's API password (the password you use to log in through OpenBazaar-Client)
 
