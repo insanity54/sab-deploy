@@ -1,9 +1,9 @@
 # sab-deploy
 
 
-Deploy an OpenBazaar-Server to a remote machine using Ansible. Used by Save-A-Bit [ob://@saveabit/store](ob://@saveabit/store).
+Deploy an OpenBazaar-Server to a remote machine using Ansible. This is how I deploy and back up my OpenBazaar store, [Save-A-Bit](ob://@saveabit/store).
 
-Site note, do you need a way to see if your store is online? Use my free service [myopenbazaar.top](https://myopenbazaar.top/). Example use: [https://myopenbazaar.top/v1/online/@saveabit]
+**Shameless plug** do you need a way to see if your OpenBazaar store is online? Use my free service [myopenbazaar.top](https://myopenbazaar.top/). Example use: https://myopenbazaar.top/v1/online/@saveabit
 
 ## Feature status
 
