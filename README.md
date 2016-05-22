@@ -3,6 +3,13 @@
 
 Deploy an OpenBazaar-Server to a remote machine using Ansible.
 
+## Feature status
+
+* [x] Deployment playbook
+* [ ] SSL setup
+* [x] Backup playbook
+* [x] Restore from backup playbook
+
 ## Administrative tasks
 
 ### deploy your openbazaar server
@@ -38,6 +45,8 @@ a timestamped archive will be created in your local backup directory
 
 ### restore your openbazaar store
 
-This is meant to be used just after deploying a new server, when you already have an existing store backup. The restore playbook expects you used the backup playbook to make your backup, as it will copy *from* the `archive_directory` folder similarly to how the backup playbook copies *to* the `archive_directory` folder. Care must be taken with restoration, as it will overwrite any remote openbazaar store data with a local backup. Make sure that's what you really want to do!
+This is meant to be used just after deploying a new server, when you already have an existing store backup. The restore playbook expects you used the backup playbook to make your backup, as it will copy *from* the `archive_directory` folder similarly to how the backup playbook copies *to* the `archive_directory` folder.
+
+Care must be taken with restoration, as it will overwrite any remote openbazaar store data with a local backup. Make sure that's what you really want to do!
 
     ansible-playbook restore.yml
