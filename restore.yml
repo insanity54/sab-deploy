@@ -28,6 +28,7 @@
 
     - name: delete any existing .openbazaar folder
       command: "mv /home/{{openbazaar_user}}/.openbazaar /home/{{openbazaar_user}}/.openbazaar.{{timestamp}}.bak"
+      ignore_errors: True
 
     - name: upload & extract the archive
       unarchive: copy=yes src={{ past_archives.files[-1].path }} dest=/home/{{ openbazaar_user }}/
