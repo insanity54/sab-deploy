@@ -6,13 +6,11 @@
   vars_files:
     - vars/secret.yml
     - vars/public.yml
-  vars:
-    openbazaar_git_url: https://github.com/OpenBazaar/OpenBazaar-Server.git
-    openbazaar_git_version: a4902caf8a2319125d2cfac6f1e51b8c2e961a75
 
 
   roles:
     - bootstrap
+    - python
     - openbazaar
 
   tasks:

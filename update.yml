@@ -1,0 +1,22 @@
+---
+
+  # updates the openbazaar server
+
+- hosts: sab
+  remote_user: root
+
+  vars_files:
+    - vars/secret.yml
+    - vars/public.yml
+
+  tasks:
+    - name: stop the openbazaar server for maintenance
+      service: name=openbazaard state=stopped
+
+    - name: update openbazaar
+      git: update=yes
+           repo="{{ openbazaar_git_url }}"
+           dest="{{ openbazaar_user_home_directory }}/openbazaar"
+
+    - name: restart the openbazaar server
+      service: name=openbazaard state=started

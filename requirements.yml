@@ -1,6 +1,8 @@
 ---
 
+- name: python
+  src: zerohacks.python
 - name: openbazaar
   src: insanity54.openbazaar
 - name: bootstrap
-  src: insanity54.bootstrap
+  src: insanity54.bootstrap-2

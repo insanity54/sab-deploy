@@ -1,7 +1,6 @@
 ---
 
-  # makes a backup of your openbazaar store as a tar.gz,
-  # and copies the archive to the local machine
+  # copies a backup of your openbazaar store to the local machine
 
 - hosts: sab
   remote_user: root
@@ -18,14 +17,14 @@
       set_fact:
         timestamp: "{{ ansible_date_time.iso8601 }}"
 
-    - name: archive the .openbazaar folder
-      command: tar cvzf /tmp/ob_{{ timestamp }}.tar.gz .openbazaar
+    - name: backup the .openbazaar folder
+      shell: "tar cvzf /tmp/openbazaar-backup_{{ timestamp }}.tar.gz .openbazaar"
       args:
-        chdir: /home/{{ openbazaar_user }}
-        creates: /tmp/ob_{{ timestamp }}.tar.gz
+        chdir: "{{openbazaar_user_home_directory}}/"
+        creates: "/tmp/openbazaar-backup_{{ timestamp }}.tar.gz"
 
-    - name: copy the archive to local machine
-      fetch: src=/tmp/ob_{{ timestamp }}.tar.gz dest={{ archive_directory }}
+    - name: copy backup to local machine
+      fetch: src="/tmp/openbazaar-backup_{{timestamp}}.tar.gz" dest="{{archive_directory}}"
 
     - name: restart the openbazaar server
       service: name=openbazaard state=started

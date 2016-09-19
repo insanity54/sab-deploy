@@ -2,7 +2,7 @@
 
   # restores a local backup to the remote machine.
 
-- hosts: sab
+- hosts: nuqik2
   remote_user: root
 
   vars_files:
@@ -13,13 +13,24 @@
   tasks:
     - name: get past archives
       delegate_to: localhost
-      find: paths={{archive_directory}}/{{ ansible_hostname }}/tmp/ patterns="ob_*.tar.gz"
+      find: paths="{{archive_directory}}/{{ ansible_hostname }}/tmp"
       register: past_archives
 
-    #- debug: msg={{past_archives}}
+    - debug: msg="{{past_archives}}"
+    - debug: msg="{{past_archives.files[-1].path}}"
 
-    - name: upload the latest archive
-      copy: src={{ past_archives.files[0].path }} dest=/tmp/
+    - name: get timestamp
+      set_fact:
+        timestamp: "{{ ansible_date_time.iso8601 }}"
 
-    - name: upload and extract the archive
-      unarchive: copy=yes src={{ past_archives.files[0].path }} dest=/home/{{ openbazaar_user }}/
+    - name: stop openbazaar server
+      service: name=openbazaard state=stopped
+
+    - name: delete any existing .openbazaar folder
+      command: "mv /home/{{openbazaar_user}}/.openbazaar /home/{{openbazaar_user}}/.openbazaar.{{timestamp}}.bak"
+
+    - name: upload & extract the archive
+      unarchive: copy=yes src={{ past_archives.files[-1].path }} dest=/home/{{ openbazaar_user }}/
+
+    - name: restart the openbazaar server
+      service: name=openbazaard state=started
